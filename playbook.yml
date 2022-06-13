@@ -68,3 +68,5 @@
       - vscode-icons-team.vscode-icons
       - HashiCorp.terraform
       - hashicorp.hcl
+      - ms-azuretools.vscode-docker
+      - ms-vscode-remote.remote-containers
