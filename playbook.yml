@@ -66,3 +66,5 @@
       - ms-vscode.makefile-tools
       - ms-python.python
       - vscode-icons-team.vscode-icons
+      - HashiCorp.terraform
+      - hashicorp.hcl
