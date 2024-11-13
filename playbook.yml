@@ -5,74 +5,57 @@
 
   vars:
     username: "joaolms"
-  
+
   tasks:
-  - name: utils
-    become: true
-    apt:
-      pkg:
-        - apt-transport-https
-        - ca-certificates
-        - chrome-gnome-shell # this package has changed to "gnome-browser-connector" in Ubuntu 23.04 and newer
-        - code
-        - curl
-        - gh
-        - git
-        - gnupg
-        - keepassxc
-        - lsb-release
-        - make
-        - ncal
-        - python3-pip
-        - tmux
-        - ubuntu-restricted-extras
-        - unzip
-        - vlc
-        - wget
-        - zip
-        - zsh
-      state: latest
+    - name: Install some pre-reqs
+      become: true
+      ansible.builtin.apt:
+        pkg:
+          - apt-transport-https
+          - build-essential
+          - ca-certificates
+          - curl
+          - fonts-powerline
+          - gh
+          - git
+          - gnupg
+          - python3-pip
+          - terraform-switcher
+          - tmux
+          - ubuntu-restricted-extras
+          - unzip
+          - vlc
+          - wget
+          - zip
 
-  - name: snaps
-    become: true
-    community.general.snap:
-      name:
-        - todoist
-        - pycharm-community
-        - postman
-        - drawio
+    - name: Install awscli
+      ansible.builtin.pip:
+        name: "awscli"
 
-  - name: awscli
-    pip:
-      name: "awscli"
+    - name: Install tgswitch
+      become: true
+      ansible.builtin.shell: |
+        set -o pipefail
+        curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
 
-  - name: tfswitch
-    become: true
-    shell: curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
-  
-  - name: tgswitch
-    become: true
-    shell: curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
+    - name: Install extensions to VSCode
+      ansible.builtin.shell: |
+        code --install-extension {{ item }}
+      loop:
+        - Gruntfuggly.todo-tree
+        - hashicorp.terraform
+        - ms-azuretools.vscode-azureterraform
+        - ms-azuretools.vscode-docker
+        - ms-python.python
+        - ms-vscode.makefile-tools
+        - ms-vscode-remote.remote-containers
+        - redhat.ansible
+        - vscode-icons-team.vscode-icons
 
-  - name: Add tgswitch and tfswitch to the user PATH variable
-    lineinfile:
-      path: /home/{{ username }}/.bashrc
-      line: export PATH="$PATH:/home/{{ username }}/bin"
-      state: present
-
-  - name: code-extensions
-    shell: |
-      code --install-extension {{ item }}
-    loop:
-      - redhat.ansible
-      - ms-vscode.makefile-tools
-      - ms-python.python
-      - vscode-icons-team.vscode-icons
-      - HashiCorp.terraform
-      - hashicorp.hcl
-      - ms-azuretools.vscode-docker
-      - ms-vscode-remote.remote-containers
-
-# install oh-my-bash
-# install steam
-# install brave browser
+# TODO: oh-my-bash
+# TODO: pycharm
+# TODO: todoist (appimage)
+# TODO: bruno (appimage)
+# TODO: vscode
+# TODO: nodejs lts
+# TODO: azcli (microsoft cli)
