@@ -19,7 +19,9 @@
           - gh
           - git
           - gnupg
+          - pipx
           - python3-pip
+          - python3-venv
           - terraform-switcher
           - tmux
           - ubuntu-restricted-extras
@@ -28,14 +30,29 @@
           - wget
           - zip
 
+    - name: Check if awscli is installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/aws
+      register: awscli
+
     - name: Install awscli
-      ansible.builtin.pip:
-        name: "awscli"
+      ansible.builtin.shell: |
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sh ./aws/install
+      when: not awscli.stat.exists
+
+    - name: Install Flatpak packages
+      community.general.flatpak:
+        name:
+          - com.discordapp.Discord
+          - org.telegram.desktop
+          - md.obsidian.Obsidian
+          - com.bitwarden.desktop
 
     - name: Install tgswitch
       become: true
       ansible.builtin.shell: |
-        set -o pipefail
         curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
 
     - name: Install extensions to VSCode
@@ -59,3 +76,4 @@
 # TODO: vscode
 # TODO: nodejs lts
 # TODO: azcli (microsoft cli)
+# TODO: zoom-workspace
