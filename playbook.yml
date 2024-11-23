@@ -68,6 +68,19 @@
         remote_src: true
       when: not vagrant.stat.exists
 
+    - name: Check if Packer is installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/packer
+      register: packer
+
+    - name: Install Packer
+      become: true
+      ansible.builtin.unarchive:
+        src: https://releases.hashicorp.com/packer/1.11.2/packer_1.11.2_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+      when: not packer.stat.exists
+
     - name: Check if tgswitch is installed
       ansible.builtin.stat:
         path: /usr/local/bin/tgswitch
