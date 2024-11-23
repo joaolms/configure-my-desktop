@@ -26,6 +26,11 @@
           - tmux
           - ubuntu-restricted-extras
           - unzip
+          - virtualbox
+          - virtualbox-dkms
+          - virtualbox-qt
+          - virtualbox-guest-additions-iso
+          - virtualbox-guest-utils
           - vlc
           - wget
           - zip
@@ -50,10 +55,29 @@
           - md.obsidian.Obsidian
           - com.bitwarden.desktop
 
+    - name: Check if Vagrant is installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/vagrant
+      register: vagrant
+
+    - name: Install Vagrant
+      become: true
+      ansible.builtin.unarchive:
+        src: https://releases.hashicorp.com/vagrant/2.4.3/vagrant_2.4.3_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: true
+      when: not vagrant.stat.exists
+
+    - name: Check if tgswitch is installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/tgswitch
+      register: tgswitch
+
     - name: Install tgswitch
       become: true
       ansible.builtin.shell: |
         curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
+      when: not tgswitch.stat.exists
 
     - name: Install extensions to VSCode
       ansible.builtin.shell: |
