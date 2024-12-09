@@ -2,4 +2,4 @@ trigger:
   - mastter
 
 steps:
-  script: echo 'hello world'
+  - script: echo 'hello world'
