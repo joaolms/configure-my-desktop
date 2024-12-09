@@ -1,0 +1,5 @@
+trigger:
+  - mastter
+
+steps:
+  script: echo 'hello world'
