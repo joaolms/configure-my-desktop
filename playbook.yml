@@ -15,6 +15,7 @@
           - build-essential
           - ca-certificates
           - curl
+          - dropbox
           - fonts-powerline
           - gh
           - git

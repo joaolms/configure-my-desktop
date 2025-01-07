@@ -1,5 +1,5 @@
 trigger:
-  - mastter
+  - master
 
 steps:
   - script: echo 'hello world'
