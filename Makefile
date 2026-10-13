@@ -5,8 +5,8 @@ prepare:
 
 dotfile:
 	rm -rfv ~/.config/nvim
-	mkdir ~/.config/nvim
-	ln -s ${PWD}/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
+	mkdir -p ~/.config
+	ln -s ${PWD}/dotfiles/nvim ~/.config/nvim
 
 config:
 	ansible-playbook playbook.yml --ask-become-pass
